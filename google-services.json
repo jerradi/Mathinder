@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "31092071630",
+    "project_id": "game-of-swipers-71623657"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:31092071630:android:3ecde31b0618cb58",
+        "android_client_info": {
+          "package_name": "com.undersnow.mathinder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "31092071630-tta7ioh4pfhofvptq21cnb6r1ccnq35v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.undersnow.mathinder",
+            "certificate_hash": "e2d980f489e777c612e308af555c71673b5a46f2"
+          }
+        },
+        {
+          "client_id": "31092071630-rapdntio12ahl7n1fh42ngl4uhb70k8n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDXtnC4ETh-G1gfAqXIcLYaNwy4BEfaZmY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

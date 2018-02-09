@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    <selector xmlns:android="http://schemas.android.com/apk/res/android">
+        <item  android:right="1dp" android:bottom="1dp">
+            <shape  >
+                <gradient
+                    android:startColor="@color/colorPrimaryDark"
+
+                    android:endColor="@color/colorPrimary"
+                    android:angle="90"/>
+            </shape>
+        </item>
+    </selector>
+
+  <!--  linear-gradient(262deg,#fc785a,#f92d7f);-->

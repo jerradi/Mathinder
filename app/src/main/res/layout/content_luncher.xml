@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_luncher"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.undersnow.mathinder.Luncher"
+    android:background="@color/colorPrimaryDark"
+    tools:showIn="@layout/activity_luncher">
+
+    <Button
+        android:text="RANKING"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="@drawable/btn_back"
+        android:textColor="#aaffffff"
+        android:drawableTop="@drawable/ic_ranking"
+
+        android:padding="10dp"
+android:onClick="showLeaderboard"
+        android:id="@+id/btnranking"
+        android:layout_below="@+id/btnstart"
+        android:layout_centerHorizontal="true"
+
+        android:layout_marginTop="15dp" />
+    <Button
+        android:text="CHALLENGE FRIENDS"
+        android:drawableTop="@drawable/ic_friends"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:padding="10dp"
+        android:background="@drawable/btn_back"
+        android:textColor="#aaffffff"
+
+android:onClick="shareApp"
+        android:id="@+id/btnshare"
+        android:layout_below="@+id/btnranking"
+        android:layout_marginTop="15dp"
+        android:layout_alignLeft="@+id/btnranking"
+        android:layout_alignStart="@+id/btnranking"
+        android:layout_alignRight="@+id/btnranking"
+        android:layout_alignEnd="@+id/btnranking" />
+
+    <!-- sign-out button -->
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="90dp"
+        app:srcCompat="@drawable/text"
+        android:alpha="0.7"
+        android:id="@+id/imageView2"
+        android:layout_above="@+id/btnranking"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:text=" START"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="@drawable/btn_back"
+        android:textColor="#aaffffff"
+        android:padding="10dp"
+android:onClick="startzxc"
+        android:id="@+id/btnstart"
+        android:drawableTop="@drawable/ic_action_name"
+        android:layout_centerVertical="true"
+        android:layout_alignRight="@+id/btnranking"
+        android:layout_alignEnd="@+id/btnranking"
+        android:layout_alignLeft="@+id/btnranking"
+        android:layout_alignStart="@+id/btnranking" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:srcCompat="@drawable/bck_blue"
+        android:id="@+id/imageView"
+        android:alpha="0.3"
+        android:scaleType="center"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <!-- <com.google.android.gms.common.SignInButton
+         android:id="@+id/sign_in_button"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignParentBottom="true"
+         android:layout_alignRight="@+id/btnshare"
+         android:layout_alignEnd="@+id/btnshare"
+         android:layout_marginRight="121dp"
+         android:layout_marginEnd="121dp" />
+
+     <Button
+         android:id="@+id/sign_out_button"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="Sign Out"
+         android:visibility="gone"
+         android:layout_alignParentBottom="true"
+         android:layout_alignParentRight="true"
+         android:layout_alignParentEnd="true" />-->
+
+</RelativeLayout>

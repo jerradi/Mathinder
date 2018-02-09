@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:swipedeck="http://schemas.android.com/apk/res-auto"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+
+    android:id="@+id/content_luncher"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <com.daprlabs.cardstack.SwipeFrameLayout
+        android:id="@+id/swp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bck_blue"
+
+
+        android:orientation="vertical">
+
+        <com.daprlabs.cardstack.SwipeDeck
+            android:id="@+id/swipe_deck"
+            android:layout_width="match_parent"
+            android:layout_height="480dp"
+            android:padding="20dp"
+            swipedeck:card_gravity="center"
+            swipedeck:card_spacing="10dp"
+            swipedeck:max_visible="3"
+            swipedeck:render_above="true"
+            swipedeck:rotation_degrees="15">
+
+        </com.daprlabs.cardstack.SwipeDeck>
+
+
+    </com.daprlabs.cardstack.SwipeFrameLayout>
+
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        ads:adSize="SMART_BANNER"
+        ads:adUnitId="@string/banner_ad_unit_id"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true" />
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="@style/progress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tvScore"
+        android:layout_gravity="center|bottom"
+        android:layout_toEndOf="@+id/rlScore"
+        android:layout_toRightOf="@+id/rlScore"
+        android:max="100"
+        android:progress="100"
+        android:progressDrawable="@drawable/progressbar" />
+    <TextView
+        android:id="@+id/tvCnt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#5ad4d4d4"
+        android:padding="5dp"
+        android:text="00"
+        android:textColor="#7fef7f"
+        android:layout_below="@+id/progressBar"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="17dp"
+        android:layout_marginEnd="17dp" />
+    <RelativeLayout
+        android:id="@+id/rlScore"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimaryLite"
+
+android:visibility="gone"
+
+        >
+
+
+        <TextView
+            android:id="@+id/tvMsg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="89dp"
+            android:text="Well done"
+            android:textColor="@color/whiteText"
+            android:textSize="30sp"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/tvSubMsg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="131dp"
+            android:text="Valar doheris"
+            android:textColor="@color/whiteText"
+            android:visibility="invisible" />
+
+        <Button
+            android:id="@+id/btnrestart"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:padding="10dp"
+            android:visibility="invisible"
+            android:background="@drawable/btn_back"
+            android:drawableTop="@drawable/ic_action_name"
+            android:onClick="startzxc"
+            android:layout_centerVertical="true"
+            android:text="RESTART"
+            android:textColor="#aaffffff"
+            />
+
+        <Button
+            android:id="@+id/btnranking"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:padding="10dp"
+
+            android:background="@drawable/btn_back"
+            android:drawableTop="@drawable/ic_ranking"
+
+            android:onClick="showLeaderboard"
+android:visibility="invisible"
+            android:text="RANKING"
+            android:textColor="#aaffffff"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tvScore"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_above="@id/adView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_gravity="center|bottom"
+
+
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/whiteText"
+        android:textSize="54sp" />
+
+
+
+
+
+
+</RelativeLayout>

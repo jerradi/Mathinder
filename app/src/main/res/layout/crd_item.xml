@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:layout_margin="10dp"
+    android:padding="10dp"
+    android:background="@drawable/linear_gradient"
+
+    android:gravity="center"
+
+    >
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/tvQuestion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+        <TextView
+            android:id="@+id/tvCounter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Question 7"
+            android:textColor="@color/colorTextLite"
+        />
+    <TextView
+        android:id="@+id/tv1"
+        android:text="54"
+        android:textColor="@color/colorText"
+        android:textSize="90sp"
+        android:gravity="right"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="0.3"
+                android:textColor="@color/opColor3"
+                android:textSize="100sp"
+                android:text="+"
+                android:id="@+id/tvop"
+                android:layout_height="match_parent" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="0.8"
+                android:textColor="@color/colorText"
+                android:textSize="75sp"
+                android:id="@+id/tv2"
+                android:layout_gravity="right"
+                android:gravity="right"
+                android:text="45"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@drawable/horiz_gradient"
+            android:id="@+id/view"
+  />
+        <TextView
+            android:id="@+id/tvResult"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="43"
+            android:gravity="right"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/colorText"
+
+            android:textSize="100sp"
+            />
+    </LinearLayout>
+
+
+</RelativeLayout>

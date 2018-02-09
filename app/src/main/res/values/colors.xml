@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="colorPrimary">#ecb99a </color>
+    <color name="colorPrimaryDark">#ff7272</color>
+    <color name="colorPrimaryLite">#dc9898</color>
+    <color name="colorAccent">#ffffff</color>
+    <color name="deflt">#99111111</color>
+    <color name="defltbk">#666666</color>
+    <color name="whiteText">#eeffffff</color>
+    <color name="colorTextLite">#88ffffff</color>
+    <color name="colorText">#bbffffff</color>
+    <color name="opColor1">#87dcfa</color>
+    <color name="opColor2">#cefa78</color>
+    <color name="opColor4">#ecec6e</color>
+    <color name="opColor3">#bc9bff</color>
+</resources>
