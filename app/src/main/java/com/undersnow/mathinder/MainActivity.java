@@ -5,6 +5,7 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -30,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public TextView tvScore, tvCnt;
-    int score = 0;
+    int score = 0, bestScore = 0;
     private ProgressBar progressBar;
     private SwipeDeck cardStack;
     private Animation animShows, zoomIn, fadeIn;
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     boolean started = false;
     private CountDownTimer mCountDownTimer;
     private View swp;
+    private TextView tvMsg,tvSubMsg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,12 +49,14 @@ public class MainActivity extends AppCompatActivity {
         cardStack = (SwipeDeck) findViewById(R.id.swipe_deck);
         tvScore = (TextView) findViewById(R.id.tvScore);
         tvCnt = (TextView) findViewById(R.id.tvCnt);
+        tvMsg = (TextView)findViewById(R.id.tvMsg);
+        tvSubMsg = (TextView)findViewById(R.id.tvSubMsg);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         animShows = AnimationUtils.loadAnimation(this, R.anim.slide_up);
         zoomIn = AnimationUtils.loadAnimation(this, R.anim.zoom_in);
         fadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
         final ArrayList<ArithmQuestion> testData = new ArrayList<>();
-
+        bestScore= readFromPrefs();
 
         Typeface custom_font = Typeface.createFromAsset(getAssets(),  "fonts/dinmdm.ttf");
 
@@ -140,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
             public void onTick(long millisUntilFinished) {
                 Log.v("Log_tag", "Tick of Progress" + i + millisUntilFinished);
                 i++;
-                makeProgress((int) i * 100 / (20000 / 100), progressBar);
+                makeProgress(100- (int) i * 100 / (20000 / 100), progressBar);
                 tvCnt.setText(String.format("%2d", millisUntilFinished/1000).replace(" ", "0")+" seconds");
             }
 
@@ -155,6 +159,17 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private int readFromPrefs() {
+        SharedPreferences sharedPref =  getSharedPreferences( "bestscore", Context.MODE_PRIVATE);
+        return sharedPref.getInt("best" , 0);
+    }
+    private void writeIntoPrefs(int score) {
+        SharedPreferences sharedPref =  getSharedPreferences( "bestscore", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putInt("best" , score);
+        editor.commit();
+    }
+
     private void makeProgress(int progress, ProgressBar seekbar) {
         if (android.os.Build.VERSION.SDK_INT >= 11) {
             // will update the "progress" propriety of seekbar until it reaches progress
@@ -165,10 +180,25 @@ public class MainActivity extends AppCompatActivity {
         } else
             seekbar.setProgress(progress);
     }
-
+    public void ShareClick(View view){
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+        String shareBody = "My score is " + bestScore + "\nI bet you can beat me on this game market://details?id="+getPackageName();
+        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "nice math App" );
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+        startActivity(Intent.createChooser(sharingIntent, "Share via"));
+    }
     private void showResults() {
-
-
+      bestScore = readFromPrefs();
+        if(bestScore<score) {
+            bestScore=score;
+            writeIntoPrefs(score);
+            tvMsg.setText("New record !!!");
+            tvSubMsg.setText("friends should see this");
+        }else {
+            tvMsg.setText("Try harder!!!");
+            tvSubMsg.setText("You have to break your record "+bestScore);
+        }
         View v = findViewById(R.id.rlScore);
         cardStack.setVisibility(View.GONE);
         slideUp(v);
@@ -196,6 +226,8 @@ public class MainActivity extends AppCompatActivity {
                 findViewById(R.id.btnranking).startAnimation(fadeIn);
                 findViewById(R.id.btnrestart).setVisibility(View.VISIBLE);
                 findViewById(R.id.btnrestart).startAnimation(fadeIn);
+                findViewById(R.id.btnshare).setVisibility(View.VISIBLE);
+                findViewById(R.id.btnshare).startAnimation(fadeIn);
             }
 
             @Override

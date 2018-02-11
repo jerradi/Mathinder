@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.View;
 
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.auth.api.signin.GoogleSignInApi;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import butterknife.InjectView;
@@ -17,12 +19,14 @@ import butterknife.OnClick;
 
 public class Luncher extends AppCompatActivity {
 
-
+    private GoogleSignInApi mGoogleSignInClient;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_luncher);
         MobileAds.initialize(this, "ca-app-pub-3577536631986182~9726310816");
+ /*       mGoogleSignInClient = GoogleSign.getClient(this,
+                new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN).build());*/
      }
 
     public void showLeaderboard(View v) {

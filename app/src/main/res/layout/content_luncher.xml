@@ -79,6 +79,7 @@ android:onClick="startzxc"
         android:id="@+id/imageView"
         android:alpha="0.3"
         android:scaleType="center"
+        android:onClick="ShareClick"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
