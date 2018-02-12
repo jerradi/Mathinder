@@ -12,6 +12,8 @@
         For more information, see https://support.google.com/admob/answer/3052638
     <!- -->
     <string name="banner_ad_unit_id">ca-app-pub-3577536631986182/5779149337</string>
+    <string name="app_id">appio</string>
+    <string name="leaderboard">leader</string>
 
 
     <!-- app_id -->
