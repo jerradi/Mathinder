@@ -20,7 +20,7 @@
         android:drawableTop="@drawable/ic_ranking"
 
         android:padding="10dp"
-android:onClick="showLeaderboard"
+android:onClick="showLeaderboards"
         android:id="@+id/btnranking"
         android:layout_below="@+id/btnstart"
         android:layout_centerHorizontal="true"

@@ -42,8 +42,8 @@ public class Luncher extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_luncher);
         MobileAds.initialize(this, "ca-app-pub-3577536631986182~9726310816");
-init(savedInstanceState);
-     }
+        init(savedInstanceState);
+    }
 
 
     public void startzxc(View v){
@@ -70,7 +70,6 @@ init(savedInstanceState);
     private GoogleSignInClient mGoogleSignInClient;
 
     // Client variables
-    private AchievementsClient mAchievementsClient;
     private LeaderboardsClient mLeaderboardsClient;
     private PlayersClient mPlayersClient;
     // request codes we use when invoking an external activity
@@ -83,105 +82,94 @@ init(savedInstanceState);
     // playing on hard mode?
     private boolean mHardMode = false;
 
-    // achievements and scores we're pending to push to the cloud
-    // (waiting for the user to sign in, for instance)
-    private final AccomplishmentsOutbox mOutbox = new AccomplishmentsOutbox();
+
 
 
     public void init(Bundle savedInstanceState) {
 
 
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
 
+                .build();
 
-        // Create the client used to sign in to Google services.
-        mGoogleSignInClient = GoogleSignIn.getClient(this,
-                new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN).build());
-
-
-        startSignInIntent();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        signIn();
     }
-
-
-
-
-
-
-    private boolean isSignedIn() {
-        return GoogleSignIn.getLastSignedInAccount(this) != null;
-    }
-
-    private void signInSilently() {
-        Log.d(TAG, "signInSilently()");
-
-        mGoogleSignInClient.silentSignIn().addOnCompleteListener(this,
-                new OnCompleteListener<GoogleSignInAccount>() {
-                    @Override
-                    public void onComplete(@NonNull Task<GoogleSignInAccount> task) {
-                        if (task.isSuccessful()) {
-                            Log.d(TAG, "signInSilently(): success");
-                            onConnected(task.getResult());
-                        } else {
-                            Log.d(TAG, "signInSilently(): failure", task.getException());
-                            onDisconnected();
-                        }
-                    }
-                });
-    }
-
-    private void startSignInIntent() {
-        startActivityForResult(mGoogleSignInClient.getSignInIntent(), RC_SIGN_IN);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d(TAG, "onResume()");
-
-        // Since the state of the signed in user can change when the activity is not active
-        // it is recommended to try and sign in silently from when the app resumes.
-        signInSilently();
-    }
-
-    private void signOut() {
-        Log.d(TAG, "signOut()");
-
-        if (!isSignedIn()) {
-            Log.w(TAG, "signOut() called, but was not signed in!");
-            return;
+        private void signIn() {
+            Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+            startActivityForResult(signInIntent, RC_SIGN_IN);
         }
 
-        mGoogleSignInClient.signOut().addOnCompleteListener(this,
-                new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        boolean successful = task.isSuccessful();
-                        Log.d(TAG, "signOut(): " + (successful ? "success" : "failed"));
 
-                        onDisconnected();
-                    }
-                });
+
+
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            // The Task returned from this call is always completed, no need to attach
+            // a listener.
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            handleSignInResult(task);
+        }
+    }
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        GoogleSignInAccount account;
+        try {
+              account = GoogleSignIn.getLastSignedInAccount(this);
+
+            if (GoogleSignIn.hasPermissions(account, Games.SCOPE_GAMES_LITE)) {
+                onSignIn(account);
+            } else {
+                mGoogleSignInClient
+                        .silentSignIn()
+                        .addOnCompleteListener(
+                                this,
+                                task -> {
+                                    if (task.isSuccessful()) {
+                                        handleSignInResult(completedTask.getResult());
+
+                                });
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+           = completedTask.getResult(ApiException.class);
+            onConnected(account);
+            // Signed in successfully, show authenticated UI.
+updateUI(account);
+        } catch (ApiException e) {
+            e.printStackTrace();
+            // The ApiException status code indicates the detailed failure reason.
+            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+            Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
+            updateUI(null);
+        }
     }
 
-
-
-    public void onShowAchievementsRequested(View v) {
-        mAchievementsClient.getAchievementsIntent()
-                .addOnSuccessListener(new OnSuccessListener<Intent>() {
-                    @Override
-                    public void onSuccess(Intent intent) {
-                        startActivityForResult(intent, RC_UNUSED);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        handleException(e, "");
-                    }
-                });
+    private void onConnected(GoogleSignInAccount googleSignInAccount) {
+        Log.d(TAG, "onConnected(): connected to Google APIs");
+        updateUI(googleSignInAccount);
+        mLeaderboardsClient = Games.getLeaderboardsClient(this, googleSignInAccount);
+    }
+    private void updateUI(GoogleSignInAccount account) {
+        Toast.makeText(this, "Signed "+account!=null?account.getFamilyName(): "NULL", Toast.LENGTH_LONG ).show();
     }
 
-
-    public void onShowLeaderboardsRequested(View v ) {
+    public void showLeaderboards(View v) {
         mLeaderboardsClient.getAllLeaderboardsIntent()
                 .addOnSuccessListener(new OnSuccessListener<Intent>() {
                     @Override
@@ -192,7 +180,7 @@ init(savedInstanceState);
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        handleException(e, "Hell");
+                        handleException(e, "leaderboards_exception");
                     }
                 });
     }
@@ -205,7 +193,7 @@ init(savedInstanceState);
             status = apiException.getStatusCode();
         }
 
-        String message = "Exceptcn mssg";
+        String message = "status_exception_error";
 
         new AlertDialog.Builder(Luncher.this)
                 .setMessage(message)
@@ -213,164 +201,4 @@ init(savedInstanceState);
                 .show();
     }
 
-
-
-
-    public void onEnteredScore(int requestedScore) {
-        // Compute final score (in easy mode, it's the requested score; in hard mode, it's half)
-        int finalScore = mHardMode ? requestedScore / 2 : requestedScore;
-
-
-
-        // update leaderboards
-        updateLeaderboards(finalScore);
-
-        // push those accomplishments to the cloud, if signed in
-        pushAccomplishments();
-
-
-
-    }
-
-    // Checks if n is prime. We don't consider 0 and 1 to be prime.
-    // This is not an implementation we are mathematically proud of, but it gets the job done.
-    private boolean isPrime(int n) {
-        int i;
-        if (n == 0 || n == 1) {
-            return false;
-        }
-        for (i = 2; i <= n / 2; i++) {
-            if (n % i == 0) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-
-
-
-    private void pushAccomplishments() {
-        if (!isSignedIn()) {
-            // can't push to the cloud, try again later
-            return;
-        }
-
-        if (mOutbox.mHardModeScore >= 0) {
-            mLeaderboardsClient.submitScore(getString(R.string.leaderboard),
-                    mOutbox.mHardModeScore);
-            mOutbox.mHardModeScore = -1;
-        }
-    }
-
-    /**
-     * Update leaderboards with the user's score.
-     *
-     * @param finalScore The score the user got.
-     */
-    private void updateLeaderboards(int finalScore) {
-        if (mHardMode && mOutbox.mHardModeScore < finalScore) {
-            mOutbox.mHardModeScore = finalScore;
-        } else if (!mHardMode && mOutbox.mEasyModeScore < finalScore) {
-            mOutbox.mEasyModeScore = finalScore;
-        }
-    }
-
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        super.onActivityResult(requestCode, resultCode, intent);
-        if (requestCode == RC_SIGN_IN) {
-            Task<GoogleSignInAccount> task =
-                    GoogleSignIn.getSignedInAccountFromIntent(intent);
-
-            try {
-                GoogleSignInAccount account = task.getResult(ApiException.class);
-                onConnected(account);
-            } catch (ApiException apiException) {
-                String message = apiException.getMessage();
-                if (message == null || message.isEmpty()) {
-                    message = "mssg";
-                }
-
-                onDisconnected();
-
-                new AlertDialog.Builder(this)
-                        .setMessage(message)
-                        .setNeutralButton(android.R.string.ok, null)
-                        .show();
-            }
-        }
-    }
-
-    private void onConnected(GoogleSignInAccount googleSignInAccount) {
-        Log.d(TAG, "onConnected(): connected to Google APIs");
-
-        mAchievementsClient = Games.getAchievementsClient(this, googleSignInAccount);
-        mLeaderboardsClient = Games.getLeaderboardsClient(this, googleSignInAccount);
-        mPlayersClient = Games.getPlayersClient(this, googleSignInAccount);
-
-
-
-        // Set the greeting appropriately on main menu
-        mPlayersClient.getCurrentPlayer()
-                .addOnCompleteListener(new OnCompleteListener<Player>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Player> task) {
-                        String displayName;
-                        if (task.isSuccessful()) {
-                            displayName = task.getResult().getDisplayName();
-                        } else {
-                            Exception e = task.getException();
-                            handleException(e, "dddd");
-                            displayName = "???";
-                        }
-
-                    }
-                });
-
-
-        // if we have accomplishments to push, push them
-        if (!mOutbox.isEmpty()) {
-            pushAccomplishments();
-
-        }
-
-    }
-
-    private void onDisconnected() {
-        Log.d(TAG, "onDisconnected()");
-
-        mAchievementsClient = null;
-        mLeaderboardsClient = null;
-        mPlayersClient = null;
-
-    }
-
-
-    public void onSignInButtonClicked() {
-        startSignInIntent();
-    }
-
-    public void onSignOutButtonClicked() {
-        signOut();
-    }
-
-    private class AccomplishmentsOutbox {
-        boolean mPrimeAchievement = false;
-        boolean mHumbleAchievement = false;
-        boolean mLeetAchievement = false;
-        boolean mArrogantAchievement = false;
-        int mBoredSteps = 0;
-        int mEasyModeScore = -1;
-        int mHardModeScore = -1;
-
-        boolean isEmpty() {
-            return !mPrimeAchievement && !mHumbleAchievement && !mLeetAchievement &&
-                    !mArrogantAchievement && mBoredSteps == 0 && mEasyModeScore < 0 &&
-                    mHardModeScore < 0;
-        }
-
-    }
 }
