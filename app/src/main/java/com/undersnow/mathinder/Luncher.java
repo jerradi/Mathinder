@@ -29,8 +29,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
-import butterknife.InjectView;
-import butterknife.OnClick;
 
 public class Luncher extends AppCompatActivity {
 
@@ -113,6 +111,7 @@ public class Luncher extends AppCompatActivity {
         if (requestCode == RC_SIGN_IN) {
             // The Task returned from this call is always completed, no need to attach
             // a listener.
+
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
         }
@@ -122,42 +121,57 @@ public class Luncher extends AppCompatActivity {
         try {
               account = GoogleSignIn.getLastSignedInAccount(this);
 
-            if (GoogleSignIn.hasPermissions(account, Games.SCOPE_GAMES_LITE)) {
-                onSignIn(account);
+  if (GoogleSignIn.hasPermissions(account, Games.SCOPE_GAMES_LITE)) {
+                onConnected(account);
             } else {
                 mGoogleSignInClient
                         .silentSignIn()
                         .addOnCompleteListener(
-                                this,
-                                task -> {
-                                    if (task.isSuccessful()) {
-                                        handleSignInResult(completedTask.getResult());
+                                this, new OnCompleteListener<GoogleSignInAccount>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<GoogleSignInAccount> task) {
+                                        if (task.isSuccessful()) {
+                                            onConnected(task.getResult());
+                                        } else {
+                                            onDisconnect();
+                                        }
+                                    }
+
 
                                 });
             }
 
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
 
-
-
-
-
-
-
-
-
-
-
-           = completedTask.getResult(ApiException.class);
-            onConnected(account);
-            // Signed in successfully, show authenticated UI.
-updateUI(account);
-        } catch (ApiException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
-            Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
+            Log.w(TAG, "signInResult:failed code=" + e.getMessage());
             updateUI(null);
         }
+    }
+
+    private void onDisconnect() {
     }
 
     private void onConnected(GoogleSignInAccount googleSignInAccount) {
